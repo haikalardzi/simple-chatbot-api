@@ -10,13 +10,6 @@
       "breakpoints": true
     },
     {
-      "idx": 1,
-      "version": "7",
-      "when": 1753178840241,
-      "tag": "0001_curious_lightspeed",
-      "breakpoints": true
-    },
-    {
       "idx": 2,
       "version": "7",
       "when": 1753179903924,
