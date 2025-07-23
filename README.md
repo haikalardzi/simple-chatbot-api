@@ -52,6 +52,10 @@ bun run dev
 
 This project was created using `bun init` in bun v1.2.17. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
 
+## How To Test
+
+You can go to <http://localhost:8000/docs> to use swagger
+
 ## Tech Stack
 
 | Components | Tech Used |
@@ -60,3 +64,4 @@ This project was created using `bun init` in bun v1.2.17. [Bun](https://bun.sh) 
 | Language | [TypeScript](https://www.typescriptlang.org/) |
 | Framework | [Express](https://expressjs.com/) |
 | ORM | [Drizzle](https://orm.drizzle.team/) |
+| API Docs | [Swagger](https://swagger.io/) |
