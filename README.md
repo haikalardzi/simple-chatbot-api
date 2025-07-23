@@ -96,7 +96,11 @@ Logs every interaction in a session, including the question shown and the option
 
 ## How To Test
 
-You can go to ```/docs``` endpoint to use swagger
+You can go to ```/docs``` endpoint to use swagger to test the API
+
+```bash
+http://localhost:8000/docs
+```
 
 ## Tech Stack
 
