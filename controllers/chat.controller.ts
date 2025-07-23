@@ -23,6 +23,7 @@ export async function getChat (req: Request, res: Response, next: NextFunction):
     try {
         const chat_session_id = parseInt(req.params.id as string);
         const session = await getSession(chat_session_id);
+        const state = await getCurrentStateSession(chat_session_id);
         if (session.length === 0) {
             res.status(404).json({
                 message: "Session not found",
@@ -30,8 +31,7 @@ export async function getChat (req: Request, res: Response, next: NextFunction):
             });
             return;
         }
-        await updateSession(chat_session_id, 1);
-        const question = await getQuestions();
+        const question = await getQuestions(state[0]?.current_question_id as number);
         const option = await getOptions(question[0]?.question_id as number);
         res.status(200).json({
             message: {
