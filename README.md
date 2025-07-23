@@ -54,7 +54,7 @@ This project was created using `bun init` in bun v1.2.17. [Bun](https://bun.sh) 
 
 ## Data storage method
 
-The API uses a relational data model with PostgreSQL to manage chatbot sessions and decision flow. The schema is optimized for maintaining question-response relationships, session tracking, and history logging.
+The API uses a relational data model with PostgreSQL to manage chatbot sessions and decision flow. The schema is for maintaining question-response relationships, session tracking, and history logging.
 
 ### Tables Overview
 
