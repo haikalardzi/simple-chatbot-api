@@ -7,6 +7,7 @@ export async function makeSession(req: Request, res: Response, next: NextFunctio
         if (session.length === 0) {
             session = await createSession();
         }
+        await updateSession(session[0]?.session_id as number, 1);
         res.status(200).json({
             message: {
                 message: "Session created successfully with id: " + session[0]?.session_id,
