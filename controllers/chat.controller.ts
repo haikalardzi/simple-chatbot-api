@@ -50,11 +50,28 @@ export async function putChat (req: Request, res: Response, next: NextFunction):
     try {
         const chat_session_id = parseInt(req.params.id as string);
         const option_id = parseInt(req.body.option_id as string);
+        if (isNaN(chat_session_id)) {
+            res.status(500).json({
+                message: "Chat session not found",
+                success: false,
+            });
+            return;
+        }
+
+        if (isNaN(option_id)) {
+            res.status(500).json({
+                message: "Wrong option id format",
+                success: false,
+            });
+            return;
+        }
+
         const state = await getCurrentStateSession(chat_session_id);
         const answer = await checkOption(state[0]?.current_question_id as number, option_id);
+
         if (answer.length === 0) {
             res.status(404).json({
-                message: "Select only the options provided",
+                message: "Chat session not found or not selected a valid option",
                 success: false,
             });
             return;

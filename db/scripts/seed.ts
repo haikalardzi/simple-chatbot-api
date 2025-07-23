@@ -18,7 +18,7 @@ async function main() {
     
     // turn 1
     const [pizza] = await db.insert(chatbotQuestions).values({
-        question: 'What kind of crust would you prefer for your Pizza?',
+        question: 'What topping would you like on your Pizza?',
     }).returning();
     const [pasta] = await db.insert(chatbotQuestions).values({
         question: 'What kind of sauce would you prefer for your Pasta?',
