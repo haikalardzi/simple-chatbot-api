@@ -1,5 +1,5 @@
 import express from "express";
-import { getChat, makeSession, putChat } from "../controllers/chat";
+import { getChat, makeSession, putChat } from "../controllers/chat.controller";
 
 const router = express.Router();
 

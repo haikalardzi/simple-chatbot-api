@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { checkOption, createSession, getNextQuestion, getOptions, getQuestions, getQuestionsByAnswer, getSession, getUnusedSession, storeHistory } from "../services/chatSession";
+import { checkOption, createSession, getCurrentStateSession, getNextQuestion, getOptions, getQuestions, getQuestionsByAnswer, getSession, getUnusedSession, storeHistory, updateSession } from "../services/chat.service";
 
 export async function makeSession(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
@@ -9,8 +9,8 @@ export async function makeSession(req: Request, res: Response, next: NextFunctio
         }
         res.status(200).json({
             message: {
-                message: "Session created successfully with id: " + session[0]?.id,
-                id: session[0]?.id
+                message: "Session created successfully with id: " + session[0]?.session_id,
+                id: session[0]?.session_id
             },
             success: true,
         });
@@ -30,8 +30,9 @@ export async function getChat (req: Request, res: Response, next: NextFunction):
             });
             return;
         }
+        await updateSession(chat_session_id, 1);
         const question = await getQuestions();
-        const option = await getOptions(question[0]?.id as number);
+        const option = await getOptions(question[0]?.question_id as number);
         res.status(200).json({
             message: {
                 history: session,
@@ -49,12 +50,21 @@ export async function putChat (req: Request, res: Response, next: NextFunction):
     try {
         const chat_session_id = parseInt(req.params.id as string);
         const option_id = parseInt(req.body.option_id as string);
-        const prevQuestion = await getQuestionsByAnswer(option_id);
-        const isValid = checkOption(prevQuestion[0]?.id as number, option_id);
-        await storeHistory(chat_session_id, prevQuestion[0]?.id as number, option_id);
+        const state = await getCurrentStateSession(chat_session_id);
+        const answer = await checkOption(state[0]?.current_question_id as number, option_id);
+        if (answer.length === 0) {
+            res.status(404).json({
+                message: "Select only the options provided",
+                success: false,
+            });
+            return;
+        }
+        await storeHistory(chat_session_id, state[0]?.current_question_id as number, option_id);
+        await updateSession(chat_session_id, answer[0]?.next_question_id as number);
         const nextQuestion = await getNextQuestion(option_id as number);
-        const options = await getOptions(nextQuestion[0]?.id as number);
+        const options = await getOptions(nextQuestion[0]?.question_id as number);
         if (!nextQuestion[0]?.question) {
+            await updateSession(chat_session_id, 1);
             res.status(200).json({
                 message: {
                     message: "Order placed successfully",

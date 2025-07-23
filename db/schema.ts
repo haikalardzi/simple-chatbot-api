@@ -19,6 +19,7 @@ export const chatbotResponses = pgTable('chatbot_responses', {
 
 export const chatSessions = pgTable('chat_sessions', {
   id: serial('id').primaryKey(),
+  current_question_id: integer('current_question_id').references(() => chatbotQuestions.id),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow()
 });

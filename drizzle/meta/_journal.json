@@ -15,6 +15,13 @@
       "when": 1753179903924,
       "tag": "0002_complex_talos",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1753293012989,
+      "tag": "0003_new_deadpool",
+      "breakpoints": true
     }
   ]
 }
