@@ -52,9 +52,51 @@ bun run dev
 
 This project was created using `bun init` in bun v1.2.17. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
 
+## Data storage method
+
+The API uses a relational data model with PostgreSQL to manage chatbot sessions and decision flow. The schema is optimized for maintaining question-response relationships, session tracking, and history logging.
+
+### Tables Overview
+
+- ```questions```
+Stores all possible chatbot questions. Acts as the core reference for flow control.
+
+    | Column   | Type    | Description                  |
+    | -------- | ------- | ---------------------------- |
+    | id       | integer | Primary Key                  |
+    | question | text    | The chatbot question content |
+
+- ```chatbot_responses```
+Maps each question to its possible responses. Each response links to the next question using ```next_question_id```, allowing dynamic branching logic.
+
+    | Column             | Type    | Description                              |
+    | ------------------ | ------- | ---------------------------------------- |
+    | id                 | integer | Primary Key                              |
+    | question\_id       | integer | Foreign Key → `questions.id`             |
+    | response           | text    | Response text shown to the user          |
+    | next\_question\_id | integer | Foreign Key → `questions.id` (next step) |
+
+- ```chat_sessions```
+Tracks the current state of an individual chat session. Stores the current active question on each session.
+
+    | Column                | Type    | Description                                |
+    | --------------------- | ------- | ------------------------------------------ |
+    | id                    | integer | Primary Key                                |
+    | current\_question\_id | integer | Foreign Key → `questions.id` (active node) |
+
+- ```chat_histories```
+Logs every interaction in a session, including the question shown and the option selected.
+
+    | Column            | Type    | Description                          |
+    | ----------------- | ------- | ------------------------------------ |
+    | id                | integer | Primary Key                          |
+    | chat\_session\_id | integer | Foreign Key → `chat_sessions.id`     |
+    | question\_id      | integer | Foreign Key → `questions.id`         |
+    | option\_id        | integer | Foreign Key → `chatbot_responses.id` |
+
 ## How To Test
 
-You can go to <http://localhost:8000/docs> to use swagger
+You can go to ```/docs``` endpoint to use swagger
 
 ## Tech Stack
 
